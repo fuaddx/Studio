@@ -1,0 +1,107 @@
+﻿@model List<SliderListItemVm>
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Slider</h6>
+		<a asp-action="Create" class="btn btn-outline-success">Create</a>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" width="100%">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Button</th>
+						<th>CreatedTime</th>
+						<th>UpdatedAt</th>
+						<th>IsInSlider</th>
+						<th>Image</th>
+						@if (Model != null)
+						{
+							var action = Model.Count(item => item.IsDeleted);
+							if (action > 0)
+							{
+								<th class="text-danger" style="text-align:center" colspan="3">Action</th>
+							}
+							else
+							{
+
+								<th class="text-danger" style="text-align:center" colspan="2">Action</th>
+							}
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null)
+					{
+						@foreach (var item in Model)
+						{
+							<tr class='@(item.IsDeleted ? "bg-danger" : "")'>
+								<td>@item.Title</td>
+								<td>@item.Description</td>
+								<td>@item.Button</td>
+								<td>@item.CreatedAt</td>
+								<td>@(item.UptadedAt != null ? item.UptadedAt.ToString() : "No Update")</td>
+								
+								@if (!string.IsNullOrEmpty(item.ImageUrl))
+								{
+									<td><img src="~/Assets/image/Stories/@item.ImageUrl" alt="" width="100" height="100"></td>
+								}
+								else
+								{
+									<td><img src="https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg" alt="" width="100" height="100"></td>
+								}
+
+								<td style="text-align:center">
+									@if (item.IsDeleted)
+									{
+										<a class="btn btn-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
+									}
+									else
+									{
+										<a class="btn btn-outline-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
+									}
+								</td>
+
+								<td style="text-align:center">
+									@if (item.IsDeleted)
+									{
+										<form asp-action="ReverseProduct" asp-route-id="@item.Id" method="post">
+											<button type="submit" class="btn btn-success">Restore</button>
+										</form>
+									}
+									else
+									{
+										<form asp-action="DeleteProduct" asp-route-id="@item.Id" method="post">
+											<button type="submit" class="btn btn-outline-danger">Delete</button>
+										</form>
+									}
+								</td>
+								@if (item.IsDeleted)
+								{
+									<td style="text-align:center">
+										<form asp-action="Delete" asp-route-id="@item.Id" method="post">
+											<button type="submit" class="btn btn-dark">DeleteFromData</button>
+										</form>
+									</td>
+								}
+
+							</tr>
+
+						}
+					}
+					else
+					{
+						<tr>
+							<td class="text-center" colspan="5">No data</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

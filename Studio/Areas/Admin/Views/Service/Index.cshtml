@@ -1,0 +1,53 @@
+﻿@model List<ServiceListItemVm>
+@{
+	ViewData["Title"] = "Index";
+}
+
+<div class="card shadow mb-4">
+	<div class="card-header py-3">
+		<h6 class="m-0 font-weight-bold text-primary">Service</h6>
+		<a asp-action="Create" class="btn btn-outline-success">Create</a>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" width="100%">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Sliders</th>
+						<th>CreatedTime</th>
+						<th>UpdatedAt</th>
+						<th class="text-danger" style="text-align:center" colspan="2">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null)
+					{
+						@foreach (var item in Model)
+						{
+							<tr>
+								<td>@item.Title</td>
+								<td>@item.Sliders.Title</td>
+								<td>@item.CreatedAt</td>
+								<td>@(item.UptadedAt != null ? item.UptadedAt.ToString() : "No Update")</td>
+								<td style="text-align:center">
+									<a class="btn btn-outline-info" asp-action="Update" asp-route-id="@item.Id">Update</a>
+								</td>
+								<td style="text-align:center">
+									<a class="btn btn-outline-danger" asp-action="DeleteProduct" asp-route-id="@item.Id">Delete</a>
+								</td>
+							</tr>
+
+						}
+					}
+					else
+					{
+						<tr>
+							<td class="text-center" colspan="5">No data</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
